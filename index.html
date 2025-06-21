@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シフト希望フォーム利用ガイド - 丸源ラーメン浜松住吉店</title>
+    <style>
+        /* 基本的なリセット */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 全体のスタイル */
+        body {
+            font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex; /* Flexboxを使ってコンテンツを中央に配置 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* 全体のパディングを追加 */
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%; /* 幅を100%に設定 */
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* ヘッダー */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .header .subtitle {
+            color: #e74c3c;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        /* カードコンポーネント */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card h2 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        
+        /* 重要なお知らせボックス */
+        .important-notice {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
+        }
+        
+        .important-notice h2 {
+            color: white;
+            border-left: 4px solid white;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        /* ハイライトボックス */
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #e67e22;
+        }
+        
+        /* 成功メッセージボックス */
+        .success-box {
+            background: linear-gradient(135deg, #d4edda, #a3d4a8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #28a745;
+        }
+        
+        /* 警告メッセージボックス */
+        .warning-box {
+            background: linear-gradient(135deg, #fff3cd, #ffd93d);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #ffc107;
+        }
+        
+        /* ステップ番号 */
+        .step-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 1.1em;
+        }
+        
+        /* フォーム画像のスタイル */
+        .form-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 15px 0;
+            /* Flexboxを使って画像を中央に配置 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column; /* 要素を縦に並べる */
+        }
+
+        /* フォーム例の内部スタイル */
+        .form-example-inner {
+            padding: 20px;
+            text-align: center;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            margin: 20px;
+            background: #f8f9fa; /* 背景色を追加 */
+            width: 90%; /* 幅を調整 */
+            max-width: 400px; /* 最大幅を設定 */
+        }
+        
+        /* フォーム例の入力フィールドとラジオボタンのスタイル（読み取り専用/無効化） */
+        .form-example-inner input[type="text"],
+        .form-example-inner input[type="radio"] {
+            /* 入力不可にする */
+            pointer-events: none;
+            opacity: 0.7; /* 少し薄くして入力不可を視覚的に表現 */
+            cursor: default; /* カーソルをデフォルトに */
+        }
+
+        .form-example-inner input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+            background-color: #e9e9e9; /* 無効化されたテキストボックスの背景色 */
+        }
+
+        .form-example-inner label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* タイムライン */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #667eea;
+        }
+        
+        /* 絵文字 */
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        
+        /* リスト */
+        ul, ol {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        /* フッター */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 30px;
+            width: 100%;
+        }
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 0; /* モバイルではコンテナのパディングをなくす */
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .step-number {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 1em;
+            }
+
+            .form-example-inner {
+                width: 100%; /* モバイルでは幅を100%に */
+                margin: 20px 0; /* マージンを調整 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍜 シフト希望フォーム利用ガイド</h1>
+            <div class="subtitle">丸源ラーメン浜松住吉店</div>
+        </div>
+
+        <div class="important-notice">
+            <h2><span class="emoji">⚠️</span>重要なお知らせ</h2>
+            <p><strong>シフト表と同じ表記の漢字フルネーム（スペースなし）で入力してください</strong></p>
+            <p><strong>該当の週に休み希望が1日もなければ、フォーム提出は不要です</strong></p>
+        </div>
+
+        <div class="card">
+            <h2><span class="emoji">📋</span>システム概要</h2>
+            <p>このシステムは、従業員の皆さんが2週間後の1週間分のシフト休み希望を簡単に提出できるシステムです。毎週土曜日にLINEで通知されるフォームURLからアクセスして、休み希望を入力してください。</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <strong>毎週土曜日 午前9時頃</strong><br>
+                    LINEで新しいフォームURLが通知されます
+                </div>
+                <div class="timeline-item">
+                    <strong>毎週木曜日 午前1時</strong><br>
+                    フォームの受付が締め切られます
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="emoji">📱</span>LINEでの通知例</h2>
+            <p>毎週土曜日の朝に、以下のような通知がLINEで届きます：</p>
+            <!-- LINE通知の画像はplaceholderを使用し、テキストを中央に配置 -->
+            <div class="form-image" style="background: #f0f0f0; min-height: 200px;">
+                <span style="padding: 20px; text-align: center;">
+                    【ホール/キッチン】<br>
+                    06月30日（Mon）〜07月06日（Sun）の休み希望フォームを更新しました。<br>
+                    以下のURLから入力してください：<br>
+                    https://docs.google.com/forms/...
+                </span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="emoji">✏️</span>フォーム入力方法</h2>
+            
+            <div class="highlight-box">
+                <p><span class="step-number">1</span><strong>氏名の入力</strong></p>
+                <p>必ずシフト表と同じ漢字フルネーム（スペースなし）で入力してください。</p>
+                <div class="success-box">
+                    <strong>正しい例：</strong>山田太郎、田中花子
+                </div>
+                <div class="warning-box">
+                    <strong>間違った例：</strong>山田　太郎（スペースあり）、やまだたろう（ひらがな）
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <p><span class="step-number">2</span><strong>各曜日の選択</strong></p>
+                <p>月曜日から日曜日まで、各曜日ごとに以下から選択します：</p>
+                <ul>
+                    <li><strong>⭕️ 出勤できる / 固定シフトはない</strong> - その日は通常通り出勤可能</li>
+                    <li>
+                        <strong>❌ 出勤できない</strong><br>
+                        <ul>
+                            <li><strong>全日出勤できない場合：</strong>店長への個別連絡は不要です。</li>
+                            <li><strong>一部時間のみ出勤できない場合：</strong>❌を選択し、別途店長へ個別連絡してください。</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Googleフォームの入力例（読み取り専用/無効化） -->
+            <div class="form-image">
+                <div class="form-example-inner">
+                    <h3 style="margin-bottom: 15px;">【06月30日（Mon）〜07月06日（Sun）】シフト希望フォーム</h3>
+                    <p style="margin-bottom: 15px;"><strong>氏名 *</strong><br>
+                    <input type="text" placeholder="山田太郎" readonly>
+                    </p>
+                    <p style="margin-bottom: 10px;"><strong>月曜日 *</strong></p>
+                    <label style="display: block; margin-bottom: 5px;"><input type="radio" name="mon" disabled> ⭕️ 出勤できる / 固定シフトはない</label>
+                    <label style="display: block; margin-bottom: 15px;"><input type="radio" name="mon" disabled> ❌ 出勤できない</label>
+                    <p style="color: #666; font-size: 0.9em;">（各曜日で同様に選択...）</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <p><span class="step-number">3</span><strong>送信前の確認</strong></p>
+                <p>すべての質問に答えた上で、一番下の「送信」ボタンを押してください。</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="emoji">📝</span>入力時の注意事項</h2>
+            <ul>
+                <li><strong>氏名は必ずシフト表と同じ表記で入力</strong>してください（漢字フルネーム、スペースなし）</li>
+                <li><strong>すべての曜日で回答が必須</strong>です（月曜日〜日曜日すべて）</li>
+                <li><strong>一部時間のみ出勤できない場合：</strong>❌を選択した上で、店長への個別連絡も忘れずに行ってください。</li>
+                <li>フォームは<strong>毎週木曜日の午前1時に締切</strong>られます</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2><span class="emoji">❓</span>よくある質問</h2>
+            
+            <div class="highlight-box">
+                <p><strong>Q: 休み希望が1日もない場合はどうすればいいですか？</strong></p>
+                <p><strong>A: フォームの提出は不要です。</strong>休み希望がある場合のみ提出してください。</p>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Q: 間違って送信してしまった場合はどうすればいいですか？</strong></p>
+                <p><strong>A: 再度正しい内容でフォームを送信してください。</strong>最新の回答が優先されます。</p>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Q: フォームのURLがわからなくなりました</strong></p>
+                <p><strong>A: 毎週土曜日の朝にLINEで通知されます。</strong>見つからない場合は店長にお声がけください。</p>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Q: 締切を過ぎてしまいました</strong></p>
+                <p><strong>A: 直接店長に休み希望をお伝えください。</strong>フォームは毎週木曜日午前1時で締切られます。</p>
+            </div>
+        </div>
+
+        <div class="success-box" style="text-align: center; margin-top: 30px;">
+            <h3><span class="emoji">🎯</span>まとめ</h3>
+            <p><strong>1. LINEの通知を確認</strong><br>
+            <strong>2. シフト表と同じ漢字フルネームで入力</strong><br>
+            <strong>3. 休み希望がなければ提出不要</strong><br>
+            <strong>4. 木曜日午前1時までに提出</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>丸源ラーメン浜松住吉店 シフト管理システム</p>
+            <p>ご不明な点がございましたら、店長までお声がけください。</p>
+        </div>
+    </div>
+</body>
+</html>
